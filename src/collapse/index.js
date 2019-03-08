@@ -1,5 +1,8 @@
 const noop = () => {};
 
+const prefixKey = prefix => key => `${prefix}-${key}`;
+const collapsePrefix = prefixKey('am-collapse');
+
 Component({
   data: {
     id: '',
@@ -23,12 +26,12 @@ Component({
     initData() {
       const { accordion, activeKey, collapseKey } = this.props;
       let activeArr = [];
-      this.$page[`handleItemTap-${collapseKey}`] = this.handleItemTap.bind(this);
+      this.$page[collapsePrefix(`handleItemTap-${collapseKey}`)] = this.handleItemTap.bind(this);
       if (accordion) {
         if (typeof activeKey === 'string') {
           activeArr = [activeKey];
         } else {
-          activeArr = [this.$page[`ids-${collapseKey}`] && this.$page[`ids-${collapseKey}`][0]];
+          activeArr = [this.$page[collapsePrefix(`ids-${collapseKey}`)] && this.$page[collapsePrefix(`ids-${collapseKey}`)][0]];
         }
       } else if (typeof activeKey === 'string') {
         activeArr = [activeKey];
@@ -61,7 +64,7 @@ Component({
       const { collapseKey } = this.props;
       this.setData({ activeArr });
       this.props.onChange(activeArr);
-      this.$page[`updates-${collapseKey}`].forEach((update) => {
+      this.$page[collapsePrefix(`updates-${collapseKey}`)].forEach((update) => {
         if (update instanceof Function) {
           update({
             activeKey: this.data.activeArr,

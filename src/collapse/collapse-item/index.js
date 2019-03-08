@@ -8,7 +8,8 @@ function collectArr(arr, ele) {
   }
   return resArr;
 }
-
+const prefixKey = prefix => key => `${prefix}-${key}`;
+const collapsePrefix = prefixKey('am-collapse');
 
 Component({
   data: {
@@ -50,8 +51,8 @@ Component({
         isActive: isOpen,
       });
       const bindedMethod = this.handleItemDataUpdate.bind(this);
-      this.$page[`updates-${collapseKey}`] = collectArr(this.$page[`updates-${collapseKey}`], bindedMethod);
-      this.$page[`ids-${collapseKey}`] = collectArr(this.$page[`ids-${collapseKey}`], this.data.id);
+      this.$page[collapsePrefix(`updates-${collapseKey}`)] = collectArr(this.$page[collapsePrefix(`updates-${collapseKey}`)], bindedMethod);
+      this.$page[collapsePrefix(`ids-${collapseKey}`)] = collectArr(this.$page[collapsePrefix(`ids-${collapseKey}`)], this.data.id);
     },
 
     handleItemDataUpdate(data) {
@@ -66,7 +67,7 @@ Component({
       const { collapseKey } = this.props;
       if (!this.props.disabled) {
         const { dataset } = evt.currentTarget;
-        this.$page[`handleItemTap-${collapseKey}`](dataset.key);
+        this.$page[collapsePrefix(`handleItemTap-${collapseKey}`)](dataset.key);
       }
     },
 
